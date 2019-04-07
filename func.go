@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"reflect"
+	"runtime"
+)
 
 func option(a, b int, op string) (int, error) {
 	switch op {
@@ -32,6 +37,17 @@ func newSwap(a, b int) (int, int) {
 	return b, a
 }
 
+func apply(op func(int, int) int, a, b int) int {
+	p := reflect.ValueOf(op).Pointer()
+	opName := runtime.FuncForPC(p).Name();
+	fmt.Printf("Call function name %s with params %d , %d\n", opName, a, b);
+	return op(a, b)
+}
+
+func pow(a, b int) int {
+	return int(math.Pow(float64(a), float64(b)))
+}
+
 func main() {
 	fmt.Println(
 		option(1, 2, "*"),
@@ -44,4 +60,11 @@ func main() {
 
 	c, e := newSwap(3, 2)
 	fmt.Println(c, e)
+
+	//初次尝试函数式编程
+	fmt.Println(apply(pow, 3, 4))
+
+	fmt.Println(apply(func(a, b int) int{
+		return int(math.Mod(float64(a), float64(b)))
+	}, 11, 3))
 }
