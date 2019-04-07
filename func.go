@@ -48,6 +48,16 @@ func pow(a, b int) int {
 	return int(math.Pow(float64(a), float64(b)))
 }
 
+//可变参数列表
+func sum(numbers ...int) int {
+	s := 0
+	for i := range numbers {
+		s += numbers[i]
+	}
+
+	return s
+}
+
 func main() {
 	fmt.Println(
 		option(1, 2, "*"),
@@ -64,7 +74,9 @@ func main() {
 	//初次尝试函数式编程
 	fmt.Println(apply(pow, 3, 4))
 
-	fmt.Println(apply(func(a, b int) int{
+	fmt.Println(apply(func(a, b int) int {
 		return int(math.Mod(float64(a), float64(b)))
 	}, 11, 3))
+
+	fmt.Println(sum(22,11,12,12313,2131))
 }
