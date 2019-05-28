@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	slice1 := []int{1, 2, 3, 4, 5}
@@ -22,7 +24,7 @@ func main() {
 
 	//append 增加切片长度
 
-	slice3 := []int{10,20,30,40,50}
+	slice3 := []int{10, 20, 30, 40, 50}
 
 	newSlice := slice3[1:3]
 
@@ -49,7 +51,7 @@ func main() {
 	如 2.3 所示，如果在创建切片时设置切片的容量和长度一样，就可以强制让新切片的第一个 append 操作创建新的底层数组，与原有的底层数组分离。
 	新切片与原有的底层数组分离后，可以安全地进行后续修改*/
 
-	slice5 := []int{1,2,3,4,5,6}
+	slice5 := []int{1, 2, 3, 4, 5, 6}
 	//长度为1=3-2，容量为1=3-2  source[i:j:k] 长度=j-i 容量=k-i
 	slice6 := slice5[2:3:3]
 
@@ -61,4 +63,33 @@ func main() {
 	fmt.Println(slice6)
 	fmt.Println(slice5)
 
+	//切片合并
+	s1 := []int{1, 4}
+	s2 := []int{2, 5}
+
+	s3 := append(s1, s2...)
+
+	fmt.Println(s3)
+
+	//迭代切片
+	slice := []int{10, 20, 30, 40}
+	// 与数组迭代一样，可以使用 for range + 普通 for 循环
+	for index, value := range slice {
+		fmt.Println(index, value)
+	}
+
+	/*在函数间传递切片就是要在函数间以值的方式传递切片。
+	由于切片的尺寸很小，在函数间复制和传递切片成本也很低；
+	而在函数间传递数组是需要拷贝整个数组的，所以内存和性能上都不好*/
+
+	//调用函数，传递一个切片副本，实际上内部还是传递了对数组的指针，所以 foo 内部的操作会影响 main 中的 slice
+	slice = foo(slice)
+
+	fmt.Println(slice)
+
+}
+
+func foo(slice []int) []int {
+	slice[0] = 100
+	return slice
 }
