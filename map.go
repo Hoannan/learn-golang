@@ -53,4 +53,14 @@ func main() {
 
 	fmt.Println(map3)
 
+	add(map4)
+
+	fmt.Println(map4)
+
+}
+
+// map在函数间传递，不会拷贝一份map，相当于是"引用传递"，所以remove函数对传入的map的操作是会影响到main函数中的map的
+
+func add(map4 map[string][]string) {
+	map4["string"] = []string{"go", "c"}
 }
