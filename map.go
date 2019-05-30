@@ -44,10 +44,13 @@ func main() {
 		fmt.Println("map3[\"c\"] dose not exist")
 	}
 
+	for key, value := range map3 {
+		fmt.Println(key, value)
+	}
+
 	// 7、从 map 中删除元素
 	delete(map3, "php")
 
 	fmt.Println(map3)
-
 
 }
