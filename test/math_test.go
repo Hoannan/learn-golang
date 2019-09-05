@@ -1,4 +1,4 @@
-package math
+package test
 
 import (
 	"math"
@@ -11,6 +11,7 @@ func TestAbs(t *testing.T) {
 	actual := math.Abs(a)
 
 	if actual != exp {
-		t.Fatalf("a = %f, actual = %f, expected = %f", a, actual, exp)
+		name := t.Name()
+		t.Fatalf("func name: %s a = %f, actual = %f, expected = %f", name, a, actual, exp)
 	}
 }
