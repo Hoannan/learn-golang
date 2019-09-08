@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go-common-master/library/database/sql"
 	"net/http"
 )
 
@@ -18,6 +19,18 @@ func main() {
 	router.PUT("/test/server/put", PutHandler)
 	router.DELETE("/test/server/delete", DeleteHandler)
 
+	//路由组
+	v1 := router.Group("/v1")
+	{
+		v1.POST("/post", PostHandler)
+		//重定向
+		v1.GET("/redirect/github", RedirectGitHub)
+	}
+
+	v2 := router.Group("v2")
+	{
+		v2.GET("/student/get", StudentGet)
+	}
 	//监听端口
 	http.ListenAndServe(":8005", router)
 
@@ -39,9 +52,9 @@ func GetHandler(c *gin.Context) {
 	return
 }
 
-func PostHandler(c *gin.Context)  {
+func PostHandler(c *gin.Context) {
 	type JsonHandler struct {
-		Id int `json:"id"`
+		Id   int    `json:"id"`
 		Name string `json:"name"`
 	}
 
@@ -58,5 +71,17 @@ func PutHandler(c *gin.Context) {
 }
 func DeleteHandler(c *gin.Context) {
 	c.Data(http.StatusOK, "text/plain", []byte("delete success!\n"))
+	return
+}
+
+func RedirectGitHub(c *gin.Context) {
+	c.Redirect(http.StatusMovedPermanently, "https://github.com/skyhee/gin-doc-cn")
+}
+
+func StudentGet(c *gin.Context) {
+	db, err := sql.Open("mysql", "ucenter_t_rw:TVlo_teB3gTxl1RvS@tcp(rm-2zekwe9l6v3tkxixgo.mysql.rds.aliyuncs.com:3306)/ucenter_t_rw")
+	result, err := db.QueryRow("SELECT * FROM student limit 1 ")
+	PrintArr(result)
+	c.Data(http.StatusOK, "text/plain", []byte("success!\n"))
 	return
 }
